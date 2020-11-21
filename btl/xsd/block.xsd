@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="signal.xsd" />
+    <xs:include schemaLocation="eventTable.xsd" />
+    <xs:include schemaLocation="globalResults.xsd" />
+    <xs:include schemaLocation="dispersion.xsd" />
+    <xs:include schemaLocation="spiroResults.xsd" />
+    <!-- Fourth level elements (not defined yet) -->
+    <!-- Reporter type -->
+    <xs:complexType name="report">
+        <xs:attribute name="created" type="BtlDateTime" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Datum a cas vytvoreni aktualni verze
+              souboru DD.MM.YYYY, hh:mm:ss
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="formatGroup" />
+    </xs:complexType>
+    <!-- mewHolterData type -->
+    <xs:complexType name="mewHolterData">
+        <xs:attributeGroup ref="formatGroup" />
+    </xs:complexType>
+    <!-- bookmarksSet type -->
+    <xs:complexType name="bookmarksSet">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="bookmark">
+              <xs:annotation>
+                <xs:documentation>
+                  Slouzi k ulozeni poznamek uzivatele, ktere se
+                  vztahuji k danemu mistu v signalu.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="type" type="xs:string" use="optional" />
+                    <xs:attribute name="tickOffsetFrom" type="xs:positiveInteger">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Pocatek oboru platnosti (ve frekvenci eventTable 2000 Hz -> BTL casy).
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attributeGroup ref="diagDetailsGroup" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- treeNode type - ignored content -->
+    <xs:complexType name="treeNode">
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+        </xs:sequence>
+        <xs:anyAttribute processContents="skip" />
+    </xs:complexType>
+    <!-- Block type -->
+    <xs:complexType name="block">
+        <xs:choice>
+            <xs:sequence>
+                <xs:element name="block" type="block" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="dispersion" type="dispersionType" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="eventTable" type="eventTableType" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="signal" type="signalType" minOccurs="0" maxOccurs="unbounded" />
+                <!-- Ignored elements -->
+                <xs:element name="treeNode" type="treeNode" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:choice>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="AnalysisResults" />
+                    <xs:enumeration value="Templates" />
+                    <xs:enumeration value="passLog" />
+                    <xs:enumeration value="BlockRecursionFix" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="name" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <!-- Block Standard type -->
+    <xs:complexType name="blockStandard">
+        <xs:sequence>
+            <xs:element name="globalResults" type="globalResultsType" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Slouzi k zachovani vysledku, ktere nejsou navazany na nejaky cas.
+                  Plati obecne pro cely zaznam.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:choice minOccurs="0" maxOccurs="1">
+                <xs:sequence>
+                    <xs:element name="report" type="report" minOccurs="0" maxOccurs="1">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Lekarska zprava generovana sw.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="eventTable" type="eventTableType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="signal" type="signalType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+                <xs:element name="spiroResults" type="tSpiroResults" minOccurs="1" maxOccurs="1"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="optional" />
+    </xs:complexType>
+    <!-- Block Extended type -->
+    <xs:complexType name="blockExtended">
+        <xs:sequence>
+            <xs:element name="block" type="block" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bookmarksSet" type="bookmarksSet" minOccurs="0" >
+              <xs:annotation>
+                <xs:documentation>
+                  Obecna struktura pro vyjmenovani polozek typu bookmark.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="eventTable" type="eventTableType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="mewHolterData" type="mewHolterData" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Element pro odkazy na specificka externi holter data.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="signal" type="signalType" minOccurs="0" maxOccurs="unbounded" />
+            <!-- Ignored elements -->
+            <xs:element name="treeNode" type="treeNode" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="optional" />
+    </xs:complexType>
+</xs:schema>

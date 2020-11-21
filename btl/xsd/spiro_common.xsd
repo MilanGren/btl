@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+    <xs:include schemaLocation="common.xsd" />
+
+    <xs:complexType name="tSpiroValue">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="unit" type="xs:string" use="required"/>
+                <xs:attribute name="passed" use="optional">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="true"/>
+                            <xs:enumeration value="false"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:complexType name="tSpiroAccept">
+        <xs:simpleContent>
+            <xs:extension base="tSpiroValue">
+                <xs:attribute name="name" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="EV_acceptability"/>
+                            <xs:enumeration value="EV_FVC_acceptability"/>
+                            <xs:enumeration value="PEFT_acceptability"/>
+                            <xs:enumeration value="TEX_acceptability"/>
+                            <xs:enumeration value="Plateau_acceptability" />
+                            <xs:enumeration value="ManoeuvreAcceptable" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+   
+   <xs:complexType name="tSpiroRepeat">
+      <xs:simpleContent>
+         <xs:extension base="tSpiroValue">
+            <xs:attribute name="name" use="required">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="FVCdiff"/>
+                     <xs:enumeration value="FEV1diff"/>
+                     <xs:enumeration value="ACC3"/>
+                     <xs:enumeration value="PEFdiff"/>
+                     <xs:enumeration value="Repeatable" />
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:attribute>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+
+    <xs:complexType name="tParamsFVCC">
+        <xs:simpleContent>
+            <xs:extension base="tSpiroValue">
+                <xs:attribute name="name" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="PEFdiff"/>
+                            <xs:enumeration value="PEF" />
+                            <xs:enumeration value="FEV075_FVC" />
+                            <xs:enumeration value="FEV1_FVC" />
+                            <xs:enumeration value="FEV3_FVC" />
+                            <xs:enumeration value="FEV6_FVC" />
+                            <xs:enumeration value="FVC" />
+                            <xs:enumeration value="FIVC" />
+                            <xs:enumeration value="FIV1" />
+                            <xs:enumeration value="PIF" />
+                            <xs:enumeration value="FEV075_VC" />
+                            <xs:enumeration value="FEV1_VC" />
+                            <xs:enumeration value="FEV3_VC" />
+                            <xs:enumeration value="FEV6_VC" />
+                            <xs:enumeration value="MEF75" />
+                            <xs:enumeration value="MEF50" />
+                            <xs:enumeration value="MEF25" />
+                            <xs:enumeration value="MMEF_FEF2575" />
+                            <xs:enumeration value="FEF2575_MMEF" />
+                            <xs:enumeration value="FEV075" />
+                            <xs:enumeration value="FEV1" />
+                            <xs:enumeration value="FEV3" />
+                            <xs:enumeration value="FEV6" />
+                            <xs:enumeration value="FEF75" />
+                            <xs:enumeration value="FEF50" />
+                            <xs:enumeration value="FEF25" />
+                            <xs:enumeration value="FET25" />
+                            <xs:enumeration value="FET50" />
+                            <xs:enumeration value="MIF75" />
+                            <xs:enumeration value="MIF50" />
+                            <xs:enumeration value="MIF25" />
+                            <xs:enumeration value="PEFT" />
+                            <xs:enumeration value="FIF50" />
+                            <xs:enumeration value="FEF50_FIF50" />
+                            <xs:enumeration value="FEF50_VC" />
+                            <xs:enumeration value="FEV075_FEV6" />
+                            <xs:enumeration value="FEV1_FEV6" />
+                            <xs:enumeration value="FIV1_FIVC" />
+                            <xs:enumeration value="LUNG_AGE" />
+                            <xs:enumeration value="VEXT" />
+                            <xs:enumeration value="Aex" />
+                            <xs:enumeration value="FIVCext" />
+                            <xs:enumeration value="FVCTime" />
+                            <xs:enumeration value="LastSecFlow" />
+                           <xs:enumeration value="T0_PEF" />
+                           <xs:enumeration value="T200_PEF" />
+                           <xs:enumeration value="VEXT_FVC" />
+                           <xs:enumeration value="ExStart" />
+                           <xs:enumeration value="ExT0" />
+                           <xs:enumeration value="ExPeak" />
+                           <xs:enumeration value="ExEnd" />
+                           <xs:enumeration value="InStart" />
+                           <xs:enumeration value="InT0" />
+                           <xs:enumeration value="InPeak" />
+                           <xs:enumeration value="InEnd" />
+                           <xs:enumeration value="ExEffortEnd" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="tParamsFVCE">
+        <xs:simpleContent>
+            <xs:extension base="tSpiroValue">
+                <xs:attribute name="name" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="PEF" />
+                            <xs:enumeration value="FEV075_FVC" />
+                            <xs:enumeration value="FEV1_FVC" />
+                            <xs:enumeration value="FEV3_FVC" />
+                            <xs:enumeration value="FEV6_FVC" />
+                            <xs:enumeration value="FVC" />
+                            <xs:enumeration value="MEF75" />
+                            <xs:enumeration value="MEF50" />
+                            <xs:enumeration value="MEF25" />
+                            <xs:enumeration value="MMEF_FEF2575" />
+                            <xs:enumeration value="FEF2575_MMEF" />
+                            <xs:enumeration value="FEV075" />
+                            <xs:enumeration value="FEV1" />
+                            <xs:enumeration value="FEV3" />
+                            <xs:enumeration value="FEV6" />
+                            <xs:enumeration value="FEF75" />
+                            <xs:enumeration value="FEF50" />
+                            <xs:enumeration value="FEF25" />
+                            <xs:enumeration value="FET25" />
+                            <xs:enumeration value="FET50" />
+                            <xs:enumeration value="PEFT" />
+                            <xs:enumeration value="FEV075_FEV6" />
+                            <xs:enumeration value="FEV1_FEV6" />
+                            <xs:enumeration value="LUNG_AGE" />
+                            <xs:enumeration value="VEXT" />
+                            <xs:enumeration value="Aex" />
+                            <xs:enumeration value="FIVCext" />
+                            <xs:enumeration value="FVCTime" />
+                            <xs:enumeration value="LastSecFlow" />
+                           <xs:enumeration value="T0_PEF" />
+                           <xs:enumeration value="T200_PEF" />
+                           <xs:enumeration value="VEXT_FVC" />
+                           <xs:enumeration value="ExStart" />
+                           <xs:enumeration value="ExT0" />
+                           <xs:enumeration value="ExPeak" />
+                           <xs:enumeration value="ExEnd" />
+                           <xs:enumeration value="InStart" />
+                           <xs:enumeration value="InT0" />
+                           <xs:enumeration value="InPeak" />
+                           <xs:enumeration value="InEnd" />
+                           <xs:enumeration value="ExEffortEnd" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="tParamsSVC">
+        <xs:simpleContent>
+            <xs:extension base="tSpiroValue">
+                <xs:attribute name="name" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="ERV" />
+                            <xs:enumeration value="IRV" />
+                            <xs:enumeration value="TV" />
+                            <xs:enumeration value="IC" />
+                            <xs:enumeration value="SVC" />
+                            <xs:enumeration value="IVC" />
+                           <xs:enumeration value="ExStart" />
+                           <xs:enumeration value="ExEnd" />
+                           <xs:enumeration value="InStart" />
+                           <xs:enumeration value="InEnd" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="tParamsMVV">
+        <xs:simpleContent>
+            <xs:extension base="tSpiroValue">
+                <xs:attribute name="name" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="MVV" />
+                            <xs:enumeration value="TV" />
+                            <xs:enumeration value="MVVf" />
+                            <xs:enumeration value="MVVt" />
+                            <xs:enumeration value="MRf" />
+                           <xs:enumeration value="MVVStart" />
+                           <xs:enumeration value="MVVEnd" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:attributeGroup name="gManeuvreAttributes">
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="FVCC"/>
+                    <xs:enumeration value="FVCE"/>
+                    <xs:enumeration value="SVC"/>
+                    <xs:enumeration value="MVV"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="date" type="BtlDateTime" />
+        <xs:attribute name="status">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="best"/>
+                    <xs:enumeration value="normal"/>
+                   <xs:enumeration value="hidden"/>
+                   <xs:enumeration value="auto"/>
+                </xs:restriction>  
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="pressure_Pa" type="xs:integer" />
+        <xs:attribute name="temperature_K" type="xs:double" />
+        <xs:attribute name="humidity_Prc" type="xs:integer" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="gFlowAttributes">
+        <xs:attribute name="frequency" type="xs:string" />
+        <xs:attribute name="zeroOffset" type="xs:integer" />
+        <xs:attribute name="numberSamples" type="xs:integer" />
+        <xs:attribute name="sensitivity_LpS" type="xs:integer" />
+        <xs:attribute name="dspApplied" type="xs:string" />
+        <xs:attribute name="dataType" type="dataType" />
+        <xs:attribute name="compression" type="xs:string" use="required" />
+        <xs:attribute name="encryption" type="xs:string" use="required" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="gVolumeAttributes">
+        <xs:attribute name="frequency" type="xs:string" />
+        <xs:attribute name="zeroOffset" type="xs:integer" />
+        <xs:attribute name="numberSamples" type="xs:integer" />
+        <xs:attribute name="sensitivity_L" type="xs:integer" />
+        <xs:attribute name="dspApplied" type="xs:string" />
+        <xs:attribute name="dataType" type="dataType" />
+        <xs:attribute name="compression" type="xs:string" use="required" />
+        <xs:attribute name="encryption" type="xs:string" use="required" />
+    </xs:attributeGroup>
+
+    <xs:complexType name="tDiagnosticsFVCC">
+        <xs:sequence>
+           <xs:element name="paramFVCC" type="tParamsFVCC" minOccurs="0" maxOccurs="unbounded"/>
+           <xs:element name="spiroAcceptability" type ="tSpiroAcceptability" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+   <xs:complexType name="tSpiroAcceptability">
+      <xs:sequence>
+         <xs:element name="spiroAccept" type="tSpiroAccept" minOccurs="0" maxOccurs="6"/>
+      </xs:sequence> 
+   </xs:complexType>
+   
+
+    <xs:complexType name="tDiagnosticsFVCE">
+        <xs:sequence>
+            <xs:element name="paramFVCE" type="tParamsFVCE" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="spiroAcceptability" type ="tSpiroAcceptability" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tDiagnosticsSVC">
+        <xs:sequence>
+            <xs:element name="paramSVC" type="tParamsSVC" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tDiagnosticsMVV">
+        <xs:sequence>
+            <xs:element name="paramMVV" type="tParamsMVV" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

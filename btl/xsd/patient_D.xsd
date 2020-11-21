@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="examination_D.xsd" />
+    <xs:include schemaLocation="patient_common.xsd" />
+    <!-- First level elements -->
+    <xs:complexType name="patientTypeD">
+        <xs:all>
+            <xs:element name="examination" type="examinationTypeD" minOccurs="1" maxOccurs="1" />
+            <xs:element name="medicamentList" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Container element definujici jednotlive medikamenty.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="medicament" type="tMedicament" minOccurs="1" maxOccurs="unbounded">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Obsahuje informace o lecich, ktere pacient pouziva.
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="patientData">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="patientMemo">
+              <xs:annotation>
+                <xs:documentation>
+                  Poznamka o pacientovi.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="anamnesis">
+              <xs:annotation>
+                <xs:documentation>
+                  Anamneza pacienta.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="surname" type="xs:string" use="required" />
+        <xs:attribute name="firstName" type="xs:string" use="required" />
+        <xs:attribute name="thirdName" type="xs:string" use="optional" />
+        <xs:attribute name="title" type="xs:string" use="optional" />
+        <xs:attribute name="otherNames" type="xs:string" use="optional" />
+        <xs:attribute name="ID" type="xs:string" use="optional" />
+        <xs:attribute name="usingDefaultValues" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="yes"/>
+                    <xs:enumeration value="no"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="birthDate" type="BtlDate" use="optional" />
+        <xs:attribute name="sex" type="sex" use="optional"/>
+        <xs:attribute name="bloodPressure" type="xs:string" use="optional" />
+        <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional" />
+        <xs:attribute name="weight" type="xs:nonNegativeInteger" use="optional" />
+        <xs:attribute name="pacemaker" type="pacemaker" use="required"/>
+        <xs:attribute name="pacemakerType" type="pacemakerType" use="optional"/>
+        <xs:attribute name="race" type="race" use="optional"/>
+        <xs:attribute default="no" name="smoking" type="xs:string" use="optional" />
+        <xs:attribute name="field1" type="xs:string" use="optional" />
+        <xs:attribute name="field2" type="xs:string" use="optional" />
+        <xs:attribute name="field3" type="xs:string" use="optional" />
+        <xs:attribute name="nameFormat" type="nameFormat" use="required"/>
+    </xs:complexType>
+</xs:schema>

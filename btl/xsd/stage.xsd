@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- Definition of the document structure -->
+  <xs:include schemaLocation="maneuvre.xsd" />
+
+  <xs:complexType name="tStage">
+    <xs:sequence>
+      <xs:element name="maneuvre" type="tManeuvre" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="repeatabilityParams" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="spiroRepeat" type="tSpiroRepeat" minOccurs="0" maxOccurs="5"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="medicamentIndex" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+</xs:schema>

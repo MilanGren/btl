@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+  <!-- patient related enums: sex -->
+  <xs:simpleType name="sex">
+     <xs:restriction base="xs:string">
+        <xs:enumeration value="male" />
+        <xs:enumeration value="female" />
+     </xs:restriction>
+  </xs:simpleType>
+  <!-- patient related enums: pacemaker -->
+  <xs:simpleType name="pacemaker">
+     <xs:restriction base="xs:string">
+        <xs:enumeration value="yes" />
+        <xs:enumeration value="no" />
+        <xs:enumeration value="unknown" />
+     </xs:restriction>
+  </xs:simpleType>
+  <!-- patient related enums: pacemakerType -->
+  <xs:simpleType name="pacemakerType">
+     <xs:restriction base="xs:string">
+        <xs:enumeration value="N/A" />
+        <xs:enumeration value="Axx" />
+        <xs:enumeration value="AAI" />
+        <xs:enumeration value="AAIR" />
+        <xs:enumeration value="Dxx" />
+        <xs:enumeration value="DDD" />
+        <xs:enumeration value="DDDR" />
+        <xs:enumeration value="DDI" />
+        <xs:enumeration value="DDIR" />
+        <xs:enumeration value="DDT" />
+        <xs:enumeration value="Vxx" />
+        <xs:enumeration value="V00" />
+        <xs:enumeration value="VAT" />
+        <xs:enumeration value="VDD" />
+        <xs:enumeration value="VDDR" />
+        <xs:enumeration value="VDI" />
+        <xs:enumeration value="VDIR" />
+        <xs:enumeration value="VVI" />
+        <xs:enumeration value="VVIR" />
+     </xs:restriction>
+  </xs:simpleType>
+  <!-- patient related enums: pacemakerType -->
+  <xs:simpleType name="race">
+     <xs:restriction base="xs:string">
+        <xs:enumeration value="Caucasian" />
+        <xs:enumeration value="Chinese" />
+        <xs:enumeration value="Japanese" />
+        <xs:enumeration value="Negro" />
+        <xs:enumeration value="European" />
+        <xs:enumeration value="Chinese" />
+        <xs:enumeration value="Japanese" />
+        <xs:enumeration value="African" />
+        <xs:enumeration value="Polynesian" />
+        <xs:enumeration value="North_Indians" />
+        <xs:enumeration value="South_Indians" />
+        <xs:enumeration value="African_American" />
+        <xs:enumeration value="Mexican" />
+        <xs:enumeration value="Latino_American" />
+        <xs:enumeration value="Americian" />
+        <xs:enumeration value="Iberian" />
+        <xs:enumeration value="Pakistanis" />
+     </xs:restriction>
+  </xs:simpleType>
+  <!-- patient related enums: nameFormat -->
+  <xs:simpleType name="nameFormat">
+     <xs:restriction base="xs:string">
+        <xs:enumeration value="OPEN" />
+        <xs:enumeration value="SWAPPED" />
+     </xs:restriction>
+  </xs:simpleType>
+    <!-- medicament type -->
+    <xs:complexType name="tMedicament">
+        <xs:attribute name="type" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Skupina leciv.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <!--
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:enumeration value="Antialergikum" />
+                      <xs:enumeration value="Analgetikum" />
+                      <xs:enumeration value="Dezinfekce" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                -->
+        <xs:attribute name="name" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Jmeno leku.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="amount" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Davka (mnozstvi leku, jez pacient uziva).
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="amountUnit" type="xs:string" use="optional"/>
+        <xs:attribute name="frequency" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Kolikrat denne lek uziva.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="index" type="xs:nonNegativeInteger" use="optional" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM,MV 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="examination.xsd" />
+    <xs:include schemaLocation="patient_common.xsd" />
+    <!-- First level elements -->
+    <xs:complexType name="patientType">
+        <xs:all>
+            <xs:element minOccurs="1" maxOccurs="1" name="examination" type="examinationType">
+              <xs:annotation>
+                <xs:documentation>
+                  Povinny element, definuje cas a typ vysetreni.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="1" name="medicamentList">
+              <xs:annotation>
+                <xs:documentation>
+                  Container element definujici jednotlive medikamenty.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="medicament" type="tMedicament" minOccurs="1" maxOccurs="unbounded">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Obsahuje informace o lecich, ktere pacient pouziva.
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="patientData" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Popisuje kartotekova data pacienta. Prinos predevsim v moznostech anamnezy a
+                  casove zavislych velicin. Zatim nebylo blize specifikovano. Pri importu do EKG
+                  jednotky ignorovano.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="patientMemo" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Poznamka o pacientovi.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="anamnesis" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>
+                  Anamneza pacienta.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:string" />
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+       <xs:attributeGroup ref="gPatientAttributes" />
+    </xs:complexType>
+   
+   
+   <xs:attributeGroup name="gPatientAttributes">
+      <xs:attribute name="surname" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Prijmeni pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="firstName" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Krestni jmeno pacienta pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="thirdName" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Prostredni jmeno pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="title" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Tituly pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="otherNames" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Dalsi jmena pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="ID" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            ID (napriklad rodne cislo pacienta)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="usingDefaultValues" use="optional">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="yes"/>
+               <xs:enumeration value="no"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="birthDate" type="BtlDate" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Datum narozeni pacienta. Oddeleni pomoci tecek. DD.MM.YYYY
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="sex" type="sex" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Pohlavi pacienta: male, female
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="bloodPressure" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Krevni tlak pacienta - momentalne (VII-2007) jednotky Lx neumi naimportovat protoze ocekavaji "int"
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Vyska pacienta v [mm]. Pouze cela cisla.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="weight" type="xs:nonNegativeInteger" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Hmotnost pacienta v [g]. Pouze cela cisla.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="pacemaker" type="pacemaker" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Indikace pritomnosti kardiostimulatoru.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="pacemakerType" type="pacemakerType" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Indikuje typ pacemakeru. Navazan na atribut pacemaker. Hodnota atributu je dana enumem Pacemaker v MEWu.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="race" type="race" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Rasa pacienta
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="smoking" type="xs:string" use="optional" default="no">
+        <xs:annotation>
+          <xs:documentation>
+            Indikace, jestli je pacient kurak.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="field1" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Volne textove pole.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="field2" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Volne textove pole.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="field3" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Volne textove pole.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="nameFormat" type="nameFormat" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Format citlivych pacientkych dat. Pripraveno pro pripadne zavedeni kryptovani techto udaju.
+            OPEN bez kryptovani, SWAPPED algoritmus: vstupni retezec se prochazi od zacatku do poloviny a kazdy lichy znak se prohodi se znakem,
+            ktery je na odpovidajici pozici pocitane od konce retezce.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+   </xs:attributeGroup>
+   
+</xs:schema>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+    <!-- Fifth level elements (not defined yet) -->
+    <xs:complexType name="eventTableType">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="eventsValid">
+              <xs:annotation>
+                <xs:documentation>
+                  Element popisujici obor platnosti anotaci od lekare.
+                  V pripade vice platnych useku se znacka opakuje.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="tickOffsetFrom" type="xs:nonNegativeInteger" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Pocatek oboru platnosti (ve frekvenci eventTable 2000 Hz -> BTL casy).
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="tickOffsetTo" type="xs:nonNegativeInteger" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Konec oboru platnosti.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attributeGroup ref="diagDetailsGroup" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="event">
+              <xs:annotation>
+                <xs:documentation>
+                  Element popisujici jednu udalost, V pripade vice
+                  udalosti se opakuje. Vnoren do elementu eventTable.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" maxOccurs="1" name="classification">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Popis typu udalosti.
+                            </xs:documentation>
+                          </xs:annotation>
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:string">
+                                        <xs:attribute name="code" type="xs:nonNegativeInteger" use="required">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Ciselny kod udalosti.
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:attribute>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element minOccurs="0" maxOccurs="unbounded" name="leadValues">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Element obsahujici hodnoty specificke
+                              pro jeden kanal. Vnoren do elementu event.
+                            </xs:documentation>
+                          </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" maxOccurs="unbounded" name="value" type="valueType">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Element popisujici jednu vlastnost.
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attributeGroup ref="leadGroup" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="tickOffset" type="xs:nonNegativeInteger" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Casova pozice udalosti. Udava se v casove jednotce
+                          dane atributem frequency.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="numberLeads" type="xs:nonNegativeInteger" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Pocet kanalu.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="leads" type="xs:string" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Nazvy svodu (pojmenovani prvku datove sady).
+                          Jejich pocet musi odpovidat numberLeads.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="author" type="xs:string" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Popisuje autora vypoctu. Zaroven slouzi jako status verifikace doktora.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Pojmenovani bloku elementu. Musi byt jednocnacne tak aby tento
+              element byl jednoznacne identifikovatelny na zaklade tohoto jmena.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="frequency" type="xs:double" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Casova jednotka pro pozici eventu (tzn. pokud
+              je casova jednotka v msec. pak frequency="1000"
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Beat">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Beatova tabulka.
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                    <xs:enumeration value="BeatAverage" />
+                    <xs:enumeration value="Button" />
+                    <xs:enumeration value="Pacing" />
+                    <xs:enumeration value="Rhythm">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="AV_Conduction">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="AV_Association">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="GeneralNoise">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="NoiseST">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="NoiseQT">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Simple tabulka.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Pattern" />
+                    <xs:enumeration value="SignificantPauses" />
+                    <xs:enumeration value="SpO2" />
+                    <xs:enumeration value="NIBP">
+                      <xs:annotation>
+                        <xs:documentation>
+                          Zaznam z tlakace.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="PatternV_Bigem" />
+                    <xs:enumeration value="PatternV_Bigem" />
+                    <xs:enumeration value="PatternV_Trigem" />
+                    <xs:enumeration value="PatternV_Quadrigem" />
+                    <xs:enumeration value="PatternV_Couplet" />
+                    <xs:enumeration value="PatternV_Triplet" />
+                    <xs:enumeration value="PatternV_Run" />
+                    <xs:enumeration value="PatternA_Bigem" />
+                    <xs:enumeration value="PatternA_Trigem" />
+                    <xs:enumeration value="PatternA_Quadrigem" />
+                    <xs:enumeration value="PatternA_Couplet" />
+                    <xs:enumeration value="PatternA_Triplet" />
+                    <xs:enumeration value="PatternA_Run" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attributeGroup ref="formatGroup" />
+    </xs:complexType>
+</xs:schema>

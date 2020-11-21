@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- Definition of the document structure -->
+  <xs:include schemaLocation="spiro_common.xsd" />
+  <xs:include schemaLocation="stage.xsd" />
+
+  <xs:complexType name="tSpiroResults" >
+    <xs:sequence>
+      <xs:element name="predicted" type="tSpiroPredicted" minOccurs="0" maxOccurs="1" />
+      <xs:element name="stage" type="tStage" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tSpiroPredicted">
+    <xs:sequence>
+      <xs:element name="predictedLevels" type="tPredictions" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="residualStandardDeviation" type="tPredictions" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="lowLimitNormal" type="tPredictions" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="author" type="xs:string" use="optional"/>
+    <xs:attribute name="code" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="tPredictions">
+    <xs:sequence>
+      <xs:element name="paramFVCC" type="tParamsFVCC" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paramFVCE" type="tParamsFVCE" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paramSVC" type="tParamsSVC" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="paramMVV" type="tParamsMVV" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+   <xs:include schemaLocation="common.xsd" />
+   <xs:include schemaLocation="patient_common.xsd" />
+   
+   <xs:attributeGroup name="gStageMedicament">
+      <xs:attribute name="type" type="xs:string" />
+      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="amount" type="xs:string" />
+      <xs:attribute name="date" type="BtlDateTime" />
+   </xs:attributeGroup>
+
+   <xs:attributeGroup name="gExportHeaderAttributes">
+      <xs:attribute fixed="2.2" name="exportVersion" type="xs:string" use="required" />
+      <xs:attribute name="filePurport" type="xs:string" fixed="data" use="required" />
+      <xs:attribute name="exportDate" type="BtlDateTime" use="optional" />
+      <xs:attribute name="creatorVersion" type="xs:string" use="optional" />
+      <xs:attribute name="creatorSN" type="xs:string" use="optional" />
+      <xs:attribute name="creatorType" type="xs:string" use="optional" />
+   </xs:attributeGroup>
+   
+   <xs:attributeGroup name="gPatientAttributes">
+      <xs:attribute name="surname" type="xs:string" use="required" />
+      <xs:attribute name="firstName" type="xs:string" use="required" />
+      <xs:attribute name="thirdName" type="xs:string" use="optional" />
+      <xs:attribute name="title" type="xs:string" use="optional" />
+      <xs:attribute name="otherNames" type="xs:string" use="optional" />
+      <xs:attribute name="ID" type="xs:string" use="optional" />
+      <xs:attribute name="birthDate" type="BtlDate" use="required" />
+      <xs:attribute name="sex" type="sex" use="required"/>
+      <xs:attribute name="bloodPressure" type="xs:string" use="optional" />
+      <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional" />
+      <xs:attribute name="weight" type="xs:nonNegativeInteger" use="optional" />
+      <xs:attribute name="pacemaker" type="pacemaker" use="required"/>
+      <xs:attribute name="pacemakerType" type="pacemakerType" use="optional"/>
+      <xs:attribute name="race" type="race" use="required"/>
+      <xs:attribute default="no" name="smoking" type="xs:string" use="optional" />
+      <xs:attribute name="field1" type="xs:string" use="optional" />
+      <xs:attribute name="field2" type="xs:string" use="optional" />
+      <xs:attribute name="field3" type="xs:string" use="optional" />
+      <xs:attribute name="nameFormat" type="nameFormat" use="required"/>
+   </xs:attributeGroup>
+    
+   <xs:attributeGroup name="gExaminationAttributes">
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="date" type="BtlDateTime" use="required" />
+      <xs:attribute name="type" type="type" use="required"/>
+      <xs:attribute name="subtype" type="tSubtype" use="required"/>
+      <xs:attribute name="uniqueGUID" type="xs:string" use="optional" />
+      <xs:attributeGroup ref="leadSystemGroup" />
+      <xs:attribute name="alias" type="xs:string" use="optional" />
+   </xs:attributeGroup>
+
+   <xs:attributeGroup name ="gRawDataAttributes">
+      <xs:attribute name="date" type="BtlDateTime" use="optional" />
+      <xs:attribute default="N/A" name="sourceType" use="optional">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="BTL-08Holter" />
+               <xs:enumeration value="BTL-08 Lx" />
+               <xs:enumeration value="BTL-08ECGL" />
+               <xs:enumeration value="BTL-08ECGLT" />
+               <xs:enumeration value="DMR-08 LC" />
+               <xs:enumeration value="DMR-08 LT" />
+               <xs:enumeration value="BTL-08Holter HUN" />
+               <xs:enumeration value="Simulated" />
+               <xs:enumeration value="N/A" />
+               <xs:enumeration value="" />
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="sourceVersion" type="xs:string" use="optional" />
+      <xs:attribute name="sourceSN" type="xs:string" use="optional" />
+      <xs:attribute default="false" name="isDemo" use="optional">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="true" />
+               <xs:enumeration value="false" />
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="sourceCalibrationDate" type="BtlDateTime" />
+   </xs:attributeGroup>
+   
+   <xs:attributeGroup name="gManeuvreAttributes">
+      <xs:attribute name="type" type="tManeuvreType" />
+      <xs:attribute name="date" type="BtlDateTime" />
+      <xs:attribute name="pressure_Pa" type="xs:integer" />
+      <xs:attribute name="humidity_Prc" type="xs:integer" />
+   </xs:attributeGroup>
+
+   <xs:attributeGroup name="gFlowAttributes">
+      <xs:attribute name="frequency" type="xs:string" />
+      <xs:attribute name="zeroOffset" type="xs:integer" />
+      <xs:attribute name="numberSamples" type="xs:integer" />
+      <xs:attribute name="sensitivityLpS" type="xs:integer" />
+      <xs:attribute name="dspApplied" type="xs:string" />
+      <xs:attribute name="dataType" type="tDataType" />
+      <xs:attribute name="encryption" type="xs:string" use="required" />
+   </xs:attributeGroup>
+   
+   <xs:simpleType name="tManeuvreType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="FVC" />
+         <xs:enumeration value="MVV" />
+         <xs:enumeration value="SVC" />
+      </xs:restriction>
+   </xs:simpleType>
+   
+   <xs:simpleType name="tDataType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="ASCII STRING" />
+         <xs:enumeration value="ASCII HEX" />
+         <xs:enumeration value="BASE64" />
+      </xs:restriction>
+   </xs:simpleType>
+
+   <xs:simpleType name ="type">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="ECG" />
+         <xs:enumeration value="Spiro" />
+      </xs:restriction>
+   </xs:simpleType>
+   
+   <xs:simpleType name="tSubtype">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="b" />
+         <xs:enumeration value="l" />
+         <xs:enumeration value="h" />
+         <xs:enumeration value="e" />
+         <xs:enumeration value="o" />
+         <xs:enumeration value="f" />
+         <xs:enumeration value="s" />
+         <xs:enumeration value="m" />
+         <xs:enumeration value="g" />
+      </xs:restriction>
+   </xs:simpleType>
+   
+   <xs:simpleType name="tCompression">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="NONE" />
+         <xs:enumeration value="DELTA GZIP" />
+      </xs:restriction>
+   </xs:simpleType>
+
+</xs:schema>

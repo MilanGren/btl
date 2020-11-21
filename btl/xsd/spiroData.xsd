@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <!-- Definition of the document structure -->
+   <xs:include schemaLocation="SpiroData_types.xsd" />
+
+
+   <xs:element name="exportHeader" type="tExportHeader" />
+   
+   
+   <xs:complexType name="tExportHeader" >
+      <xs:sequence>
+         <xs:element name="patient" type="tPatient" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attributeGroup ref="gExportHeaderAttributes" />
+   </xs:complexType>
+   
+   <xs:complexType name="tPatient" >
+      <xs:sequence>
+         <xs:element name="examination" type="tExamination" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attributeGroup ref="gPatientAttributes" />
+   </xs:complexType>
+   
+
+   <xs:complexType name="tExamination">
+      <xs:sequence>
+         <xs:element name="rawData" type="tRawData" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attributeGroup ref="gExaminationAttributes" />
+   </xs:complexType>
+
+   <xs:complexType name="tRawData">
+      <xs:sequence>
+         <xs:element name="maneuvre" type="tManeuvre" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attributeGroup ref="gRawDataAttributes" />
+   </xs:complexType>
+   
+   <xs:complexType name="tManeuvre">
+      <xs:sequence>
+         <xs:element name="flow" type="tFlow" />
+      </xs:sequence>
+      <xs:attributeGroup ref="gManeuvreAttributes" />
+   </xs:complexType>
+
+   <xs:complexType name="tFlow" mixed="true">
+      <xs:simpleContent>
+         <xs:extension base="intSequence">
+            <xs:attributeGroup ref="gFlowAttributes" />
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+
+   <xs:complexType name="tStageList">
+      <xs:sequence>
+         <xs:element name="stageMedicament" type="tStageMedicament" minOccurs="1" maxOccurs="unbounded" />
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="tStageMedicament">
+      <xs:attributeGroup ref="gStageMedicament" />
+   </xs:complexType>
+</xs:schema>

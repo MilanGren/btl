@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM,MV 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="common.xsd" />
+  <xs:include schemaLocation="waves.xsd" />
+   <xs:include schemaLocation="patient.xsd" />
+   <xs:include schemaLocation="examination.xsd" />
+
+  <xs:complexType name="signalType">
+    <xs:sequence>
+       <xs:element name="originalSignalParts" type="tOriginalSignalParts" minOccurs="0" maxOccurs="1" />
+       <xs:choice>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="wave" type="waveType">
+          <xs:annotation>
+            <xs:documentation>
+              V tomto elementu jsou uzavrena data kanalu
+              po jednotlivych svodech. Kazdy svod je
+              uzavren ve svem datovem elementu lead.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="waveAll" type="waveAllType">
+          <xs:annotation>
+            <xs:documentation>
+              Povoleno pouze pro zkomprimovanadata nebo pro data
+              v externim souboru. Obsahuje data vsech kanalu dohromady.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+      <xs:element minOccurs="0" maxOccurs="1" name="signalComment" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="type" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Obsahuje upresneni vstupnich dat. Dvojice type + name musi byt unikatni.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Ecg" />
+          <xs:enumeration value="Other" />
+          <xs:enumeration value="Voltage" />
+          <xs:enumeration value="Status" />
+          <xs:enumeration value="HFout" />
+          <xs:enumeration value="Accelerometer" />
+          <xs:enumeration value="SpO2" />
+          <xs:enumeration value="Load" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="name" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Pojmenovani bloku elementu. Musi byt jednoznacne ... tak aby tento element byl jednoznacne
+          identifikovatelny na zaklade tohoto jmena.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="numberSamples" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Pocet vzorku [u Lx1.05 mene nebo rovno 900000] na jeden kanal
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="numberLeads" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Pocet kanalu [u Lx1.05 mene nez 13].
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="leads" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Nazvy svodu (pojmenovani prvku datove sady).
+          Jejich pocet musi odpovidat numberLeads.
+          Jako oddelovac bude pouzita tecka carka. Nazvy svodu
+          Musi odpovidat norme IEC_60601-2-53_Ed. 1.0_Draft!.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="leadCodes" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Kody svodu, ktere odpovidaji norme IEC_60601-2-53_Ed. 1.0_Draft.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="frequency" type="xs:double" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Vzorkovaci frekvence signalu [u Lx1.05 se musi rovnat 500].
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="zeroOffset" type="xs:int" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Posun hodnot v signalu v ose Y [u Lx1.05 se musi rovnat 0].
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="sensitivity" type="xs:int" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Kvantovani signalu. Pocet jednotek na standardni
+          jednotku signalu (u EKG je standardni jednotka mV,
+          tzn. u EKG signalu sesitivity = 1000 znamena 1jednotka odpovida 1E-6 = 1uV)
+          [u Lx1.05 se musi rovnat 1000]
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="dataType" type="dataType" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          V jakem formatu jsou ulozeny hodnoty, pevny vycet.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="compression" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Popis komprese signalu. Pevny vycet.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NONE" />
+          <xs:enumeration value="DELTA GZIP" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="encryption" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Popis kryptovani signalu.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="deltaCompressDataSize" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Povinne pokud encryption != NONE.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:int">
+          <xs:maxExclusive value="4194394" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="deltaZipCompressDataSize" type="xs:int" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Povinne pokud encryption != NONE.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute default="50" name="mainsFrequency" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Frekvence sitoveho ruseni [u Lx1.05 musi byt 50 nebo 60].
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:int">
+          <xs:enumeration value="50" />
+          <xs:enumeration value="60" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="appliedFilters" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Popisuje filtry, ktere byly pouzity na dany signal.
+          Nepocitaji se do toho filtry analogove casti pristroje.
+          Slouzi pro pripad, kdy neni mozne ziskat true_raw data.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="acquiredFilters" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Popisuje filtry, ktere maji byt pouzity pri zobrazeni signalu.
+          V soucasnosti se zde poznamenavaji filtry, ktere nastavi na EKG
+          jednotce obsluha behem naberu.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="timeOffset" type="BtlTimeOffset" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Vzdalenost prvniho prvku (signalu) od referencniho casu ve formatu HH:MM:SS.xxxx
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+   <xs:complexType name="tOriginalSignalParts">
+      <xs:sequence>
+         <xs:element name="signalPart" minOccurs="1" maxOccurs="unbounded">
+            <xs:complexType>
+               <xs:sequence>
+                  <xs:element name="patient" type="tSignalPartPatient" minOccurs="1" maxOccurs="1" />
+                  <xs:element name="examination" type="tSignalPartExamination" minOccurs="1" maxOccurs="1" />
+                  <xs:element name="operation" minOccurs="0" maxOccurs="unbounded">
+                     <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                           <xs:enumeration value="filtration" />
+                           <xs:enumeration value="resampling" />
+                           <xs:enumeration value="averageBeat" />
+                        </xs:restriction>
+                     </xs:simpleType>
+                  </xs:element>
+               </xs:sequence>
+               <xs:attribute name="tickOffsetFrom" type="xs:nonNegativeInteger" use="optional" />
+               <xs:attribute name="tickOffsetTo" type="xs:nonNegativeInteger" use="optional" />
+               <xs:attribute name="frequency" type="xs:nonNegativeInteger" use="optional" />              
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="tSignalPartPatient">
+      <xs:attributeGroup ref="gPatientAttributes" />
+   </xs:complexType>
+
+   <xs:complexType name="tSignalPartExamination">
+      <xs:attributeGroup ref="gExaminationAttributes" />
+   </xs:complexType>
+   
+</xs:schema>

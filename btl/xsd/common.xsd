@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- TimeOffset: HHH:MM:SS.1234 or 00:00 or 0 -->
+    <xs:simpleType name="BtlTimeOffset">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{1,3}:[0-5]{0,1}[0-9]:[0-5]{0,1}[0-9].{0,1}[0-9]{0,4}|00:00|0" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Time: HH:MM:SS or H:M:S etc -->
+    <xs:simpleType name="BtlTime">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-2]{0,1}[0-9]:[0-5]{0,1}[0-9]:[0-5]{0,1}[0-9]" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Date: DD.MM:YYYY or D.M.YYYY or DD.M.YYYY etc. -->
+    <xs:simpleType name="BtlDate">
+        <xs:restriction base="xs:string">
+          <!-- <xs:pattern value="[0-3]{0,1}[0-9].[0-1]{0,1}[0-9].[0-9]{1,4}" /> -->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- TimeOffset: Date, Time -->
+    <xs:simpleType name="BtlDateTime">
+        <xs:restriction base="xs:string">
+          <!-- <xs:pattern value="[0-3]{0,1}[0-9].[0-1]{0,1}[0-9].[0-9]{1,4}, [0-5]{0,1}[0-9]:[0-5]{0,1}[0-9]:[0-5]{0,1}[0-9]" /> -->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- name, valid -->
+    <xs:complexType name="valueType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="name" type="xs:string" use="required" />
+                <xs:attributeGroup ref="validGroup" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <!-- List of integer values -->
+    <xs:simpleType name="dataType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ASCII STRING" />
+            <xs:enumeration value="ASCII HEX" />
+            <xs:enumeration value="BASE64" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- List of integer values -->
+    <xs:simpleType name="intSequence">
+        <xs:list itemType="xs:integer" />
+    </xs:simpleType>
+    <xs:simpleType name="hexLiteral">
+        <xs:union memberTypes="xs:string">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="^[0-9a-fA-F]+$"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+    <!-- Signal (as ascii or binary) -->
+    <xs:simpleType name="BtlSignal">
+        <xs:union memberTypes="xs:base64Binary intSequence" />
+    </xs:simpleType>
+    <xs:simpleType name="BtlSignalHex">
+        <xs:union memberTypes="hexLiteral intSequence" />
+    </xs:simpleType>
+    <!-- statement type -->
+    <xs:complexType name="tStatement">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="type" use="required">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="Holter findings" />
+                            <xs:enumeration value="Morphology" />
+                            <xs:enumeration value="Rhythm" />
+                            <xs:enumeration value="GlasgowLong" />
+                            <xs:enumeration value="GlasgowShort" />
+                            <xs:enumeration value="ATSInterpretation"/>
+                            <xs:enumeration value="BTSInterpretation"/>
+                            <xs:enumeration value="EnrightInterpretation"/>
+                            <xs:enumeration value="unused"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="code" type="xs:nonNegativeInteger" use="required" />
+                <xs:attributeGroup ref="validGroup" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <!-- List of lead systems -->
+    <xs:attributeGroup name="leadSystemGroup">
+        <xs:attribute name="leadSystem" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Svodovy system daneho vysetreni.
+            </xs:documentation>
+          </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="12L_Eithoven_E" />
+                    <xs:enumeration value="12L_Eithoven_LRI" />
+                    <xs:enumeration value="12L_Eithoven_L" />
+                    <xs:enumeration value="12L_Right_E" />
+                    <xs:enumeration value="12L_Right_LRI" />
+                    <xs:enumeration value="12L_Right_L" />
+                    <xs:enumeration value="12L_Dorsal_E" />
+                    <xs:enumeration value="12L_Dorsal_LRI" />
+                    <xs:enumeration value="12L_Dorsal_L" />
+                    <xs:enumeration value="3L_Bipolar_E" />
+                    <xs:enumeration value="7L_Eithoven_E" />
+                    <xs:enumeration value="3L_Bipolar_L" />
+                    <xs:enumeration value="7L_Eithoven_L" />
+                    <xs:enumeration value="Other" />
+                    <xs:enumeration value="Unknown" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <!-- list of leads -->
+    <xs:attributeGroup name="leadGroup">
+        <xs:attribute name="lead" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Pojmenovani kanalu musi odpovidat jednomu kanalu z vyctu "leads".
+              Jmeno jednoho kanalu se smi vyskytnout pouze jednou.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <!-- fileFormat filePath -->
+    <xs:attributeGroup name="formatGroup">
+        <xs:attribute name="fileFormat" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Format odkazovaneho souboru.
+            </xs:documentation>
+          </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="HunBinary" />
+                    <xs:enumeration value="ErdBinary" />
+                    <xs:enumeration value="mewzipBinary" />
+                    <xs:enumeration value="RcfBinary" />
+                    <xs:enumeration value="BinarySigned16" />
+                    <xs:enumeration value="Plain" />
+                    <xs:enumeration value="XmlFragment" />
+                    <xs:enumeration value="PDF" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="filePath" use="optional" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              Adresa odkazovaneho souboru.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <!-- 
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:length value="1000" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        -->
+    </xs:attributeGroup>
+    <!-- valid enum -->
+    <xs:attributeGroup name="validGroup">
+        <xs:attribute default="" name="valid" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Muze slouzit napriklad k validaci spravnosti
+              zobrazeni prumerovaneho beatu nebo reprezentace templatu.
+              Pouze v souborech s analyzou.
+            </xs:documentation>
+          </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="yes" />
+                    <xs:enumeration value="no" />
+                    <xs:enumeration value="" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <!-- enum of diagnostics properties -->
+    <xs:attributeGroup name="diagDetailsGroup">
+        <xs:attribute default="easy" name="diagDifficulty" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="easy" />
+                    <xs:enumeration value="hard" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute default="patients" name="diagRealm" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="patients" />
+                    <xs:enumeration value="control" />
+                    <xs:enumeration value="normative" />
+                    <xs:enumeration value="curiosity" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+</xs:schema>

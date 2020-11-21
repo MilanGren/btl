@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+    <xs:include schemaLocation="signal.xsd" />
+    <xs:include schemaLocation="block.xsd" />
+    <xs:include schemaLocation="eventTable.xsd" />
+    <xs:include schemaLocation="maneuvre.xsd" />
+    <!-- Third level elements (not defined yet) -->
+    <xs:complexType name="rawDataType">
+        <xs:choice>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="block" type="block" />
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="signal" type="signalType" />
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="eventTable" type="eventTableType" />
+            </xs:sequence>
+            <xs:sequence>
+                <xs:element name="lookUpTable" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="BtlSignal">
+                                <xs:attribute name="calibrationDate" type="BtlDateTime" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="maneuvre" type="tManeuvre" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:choice>
+        <xs:attribute name="date" type="BtlDateTime" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Obsahuje datum a cas zahajeni naberu dat.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute default="N/A" name="sourceType" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Typ jendotky/sw, kdy nabrana data vznikla. Nahrada za polozku "exportHeader.unitType".
+            </xs:documentation>
+          </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="BTL-08Holter" />
+                    <xs:enumeration value="BTL-08 Lx" />
+                    <xs:enumeration value="BTL-08ECGL" />
+                    <xs:enumeration value="BTL-08ECGLT" />
+                    <xs:enumeration value="DMR-08 LC" />
+                    <xs:enumeration value="DMR-08 LT" />
+                    <xs:enumeration value="BTL-08Holter HUN" />
+                    <xs:enumeration value="Simulated" />
+                    <xs:enumeration value="BTL-003-Spiro" />
+                    <xs:enumeration value="BTL-003-Basic-AVB_12" />
+                    <xs:enumeration value="BTL-003-Basic-AVB_15" />
+                    <xs:enumeration value="BTL-003-Basic-AVB_16" />
+                    <xs:enumeration value="BTL-003-Professional-AVB_12" />
+                    <xs:enumeration value="BTL-003-Professional-AVB_15" />
+                    <xs:enumeration value="BTL-003-Professional-AVB_16" />
+                    <xs:enumeration value="N/A" />
+                    <xs:enumeration value="" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="sourceVersion" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Verze hw zdrojoveho zarizeni.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="sourceSN" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Seriove cislo pristroje.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="formatGroup" />
+    </xs:complexType>
+</xs:schema>

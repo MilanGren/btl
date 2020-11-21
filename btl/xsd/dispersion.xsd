@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 02.02.2010 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="common.xsd" />
+	<!-- Third level elements (not defined yet) -->
+	<xs:complexType name="dispersionType">
+		<xs:sequence>
+			<xs:element minOccurs="1" maxOccurs="1" name="dispersionPosition" type="dispersionPositionType" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="dispersionValues" type="dispersionValuesType" />
+		</xs:sequence>
+		<xs:attribute name="name" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PCM" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="frequency" type="xs:double" use="required" />
+		<xs:attribute default="0" name="zeroOffset" type="xs:int" use="optional" />
+		<xs:attribute default="ASCII STRING" name="dataType" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ASCII STRING" />
+					<xs:enumeration value="BASE64" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute default="00:00" name="timeOffset" type="BtlTimeOffset" use="optional" />
+		<xs:attribute name="numberPositions" type="xs:int" use="required" />
+	</xs:complexType>
+	<!-- Dispersion position -->
+	<xs:complexType name="dispersionPositionType">
+		<xs:simpleContent>
+			<xs:extension base="BtlSignal" />
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- Dispersion values -->
+	<xs:complexType name="dispersionValuesType">
+		<xs:simpleContent>
+			<xs:extension base="BtlSignal">
+				<xs:attribute name="name" type="xs:string" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+</xs:schema>

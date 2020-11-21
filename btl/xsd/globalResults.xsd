@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="common.xsd" />
+	<!-- Fifth level elements (not defined yet) -->
+	<xs:complexType name="globalResultsType">
+		<xs:sequence>
+            <xs:element name="conclusion" type="tConclusion" minOccurs="0" maxOccurs="1">
+              <xs:annotation>
+                <xs:documentation>
+                  Shrnuti vysetreni.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="medicalFindings" type="tConclusion" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="statement" type="tStatement" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Vyrok popisujici dany zaznam.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+			<xs:element name="value" type="valueType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Element popisujici jednu vlastnost.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+		</xs:sequence>
+		<xs:attribute name="numberStatements" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Vzhledem k tomu, ze pocet vyrobku se neda dopredu nijak cekat,
+          je zde uveden pocet hodnot statementu.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+	</xs:complexType>
+
+    <xs:complexType name="tConclusion">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="author" type="xs:string" use="required" />
+                <xs:attribute name="conclusionState" use="optional">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="none"/>
+                            <xs:enumeration value="uncertain"/>
+                            <xs:enumeration value="medician"/>
+                            <xs:enumeration value="confirmed"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attributeGroup ref="validGroup" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

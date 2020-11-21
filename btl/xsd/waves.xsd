@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+    <!-- Fifth level elements (not defined yet) -->
+    <xs:complexType name="waveType">
+        <xs:simpleContent>
+            <xs:extension base="BtlSignal">
+                <xs:attributeGroup ref="validGroup" />
+                <xs:attributeGroup ref="leadGroup" />
+                <xs:attributeGroup ref="formatGroup" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="waveAllType">
+        <xs:simpleContent>
+            <xs:extension base="BtlSignalHex">
+                <xs:attributeGroup ref="formatGroup" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

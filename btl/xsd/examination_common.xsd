@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Common enums for examination -->
+    <xs:simpleType name="type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ECG" />
+            <xs:enumeration value="Spiro" />
+            <xs:enumeration value="BloodPressure" /> 
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="subtype">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="b" />
+            <xs:enumeration value="l" />
+            <xs:enumeration value="h" />
+            <xs:enumeration value="e" />
+            <xs:enumeration value="o" />
+            <xs:enumeration value="f" />
+            <xs:enumeration value="s" />
+            <xs:enumeration value="m" />
+            <xs:enumeration value="g" />            
+            </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

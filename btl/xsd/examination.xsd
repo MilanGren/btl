@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Template for BtlXml version 2.3
+     Created:  ZM, 26.11.2009 
+     Modified: MV, 13.09.2010 - examination attributes grouped together    
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="examination_common.xsd" />
+  <xs:include schemaLocation="common.xsd" />
+  <xs:include schemaLocation="rawData.xsd" />
+  <xs:include schemaLocation="analysis.xsd" />
+  <!-- Second level elements (not defined yet) -->
+  <xs:complexType name="examinationType">
+    <xs:all>
+      <xs:element minOccurs="0" name="examinationMemo">
+        <xs:annotation>
+          <xs:documentation>
+            Poznamka o vysetreni. Pri importu do EKG jednotky ignorovano.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string" />
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="rawData" type="rawDataType">
+        <xs:annotation>
+          <xs:documentation>
+            Vnoren v elementu examination. Uzavira primarni (nezpracovana) data vysetreni.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="analysis" type="analysisType">
+        <xs:annotation>
+          <xs:documentation>
+            Uzavira vysledky analyzy pripadne zpracovava data vysetreni.
+            Povinne uzavreny v containeru examination.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:all>
+     <xs:attributeGroup ref="gExaminationAttributes" />
+  </xs:complexType>
+
+   <xs:attributeGroup name="gExaminationAttributes">
+      <xs:attribute name="name" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Jmeno vysetreni: surname + firstName pacienta.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="date" type="BtlDateTime" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Datum a cas zahajeni vysetreni. DD.MM.YYYY, hh.mm.ss
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="type" type="type" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Popisuje typ vysetreni. Na zaklade tohoto atributu
+            se kontextova ctecka muze rozhodnout, co bude ocekavat.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="subtype" type="subtype" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Popisuje podtyp vysetreni. Na zaklade tohoto atributu
+            se kontextova ctecka muze rozhodnout, co bude ocekavat.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="uniqueGUID" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Jedinecna identifikace vysetreni - hlavne pro MEW.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attributeGroup ref="leadSystemGroup" />
+      <xs:attribute name="alias" type="xs:string" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            Obsahuje alias pro dane vysetreni pro ulozeni v databazi MEDAT.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="tickOffsetFrom" type="xs:nonNegativeInteger" use="optional" />
+      <xs:attribute name="tickOffsetTo" type="xs:nonNegativeInteger" use="optional" />
+      <xs:attribute name="frequency" type="xs:nonNegativeInteger" use="optional" />
+      <xs:attribute default="false" name="isDemo" use="optional">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="true" />
+               <xs:enumeration value="false" />
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+   </xs:attributeGroup>
+</xs:schema>

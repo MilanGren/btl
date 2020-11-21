@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Template for BtlXml version 2.3 - data file. 
+     Author: ZM
+     Date:   26.11.2009     
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+    <xs:include schemaLocation="patient.xsd" />
+    <!-- Definition of the document structure -->
+    <xs:element name="exportHeader">
+      <xs:annotation>
+        <xs:documentation>
+          Popis zarízeni (jednotky), na kterém byl signál získán
+          a informace o tom, jak parsovat soubor.
+          Povinný root element souboru ve formátu xmlDocument
+        </xs:documentation>
+      </xs:annotation>
+        <xs:complexType>
+           <xs:choice>
+              <xs:sequence>
+                 <xs:element minOccurs="0" maxOccurs="1" name="patient" type="patientType">
+                   <xs:annotation>
+                     <xs:documentation>
+                       Vnoren v elementu exportHeader. Element popisujici pacienta a jeho stav v dobe vysetreni.
+                     </xs:documentation>
+                   </xs:annotation>
+                 </xs:element>
+                 <xs:element minOccurs="0" maxOccurs="1" name="doctor" type="doctorType">
+                   <xs:annotation>
+                     <xs:documentation>
+                       Element popisujici lekare.
+                     </xs:documentation>
+                   </xs:annotation>
+                 </xs:element>
+              </xs:sequence>
+              <xs:element name="list" type="tList" maxOccurs="unbounded"  />
+           </xs:choice>
+           
+            <xs:attribute name="exportVersion" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  Verze exportniho protokolu (srpen 2007 = 2.00)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="filePurport" use="required">
+              <xs:annotation>
+                <xs:documentation>
+                  Co je obsahem dokumentu: pouze data, pouze analyza,
+                  pouze reference, full.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="data"/>
+                        <xs:enumeration value="analysis"/>
+                        <xs:enumeration value="reference"/>
+                        <xs:enumeration value="full"/>
+                        <xs:enumeration value="list"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="exportDate" type="BtlDateTime" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Datum a cas (prvniho) vytvoreni aktualniho souboru DD.MM.YYYY,  hh:mm:ss
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="creatorVersion" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Popisuje verzi softwaru, ktera vytvorila tento dokument ( pokud je vytvoren EKG jednotkou, jedna se o verzi firmware teto jednotky)
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="creatorSN" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Seriove císlo jednotky/ charakteristicke cislo sw vytvorivsího tento dokument.
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="creatorType" type="xs:string" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Popisuje typ zarizeni, ktere vytvorilo tento dokument" XmlSerialCom, MewExport, BTL-08 LC
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:complexType name="doctorType">
+       <xs:complexContent>
+          <xs:restriction base="xs:anyType">
+             <xs:attributeGroup ref="gDoctorAttributes" />
+          </xs:restriction>
+       </xs:complexContent>
+    </xs:complexType>
+
+   <xs:attributeGroup name="gDoctorAttributes">
+      <xs:attribute name="surname" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            Prijmeni lekare.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="firstName" type="xs:string" use="required" />
+      <xs:attribute name="nameFormat" type="nameFormat" use="required"/>
+      <xs:attribute name="thirdName" type="xs:string" use="optional" />
+      <xs:attribute name="title" type="xs:string" use="optional" />
+      <xs:attribute name="otherNames" type="xs:string" use="optional" />
+   </xs:attributeGroup>
+
+   <xs:complexType name="tList">
+      <xs:choice>
+          <xs:element type="tListPatient" name="patient" maxOccurs="unbounded" />
+          <xs:element type="doctorType" name="doctor" maxOccurs="unbounded" />
+      </xs:choice>
+   </xs:complexType>
+
+   <xs:complexType name="tListPatient">
+      <xs:complexContent>
+         <xs:restriction base="xs:anyType">
+            <xs:attributeGroup ref="gPatientAttributes" />
+         </xs:restriction>
+      </xs:complexContent>
+   </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Definition of the document structure -->
+    <xs:include schemaLocation="common.xsd" />
+    <xs:include schemaLocation="spiro_common.xsd" />
+
+    <xs:complexType name="tManeuvre">
+        <xs:sequence>
+            <xs:element name="flow" type="tFlow" minOccurs="0" maxOccurs="1" />
+            <xs:element name="volume" type="tVolume" minOccurs="0" maxOccurs="1" />
+            <xs:choice>
+                <xs:element name="diagnosticsFVCC" type="tDiagnosticsFVCC" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="diagnosticsFVCE" type="tDiagnosticsFVCE" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="diagnosticsSVC" type="tDiagnosticsSVC" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="diagnosticsMVV" type="tDiagnosticsMVV" minOccurs="0" maxOccurs="1"/>
+            </xs:choice>
+            <xs:element name="interpretations" type="tInterpretations" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attributeGroup ref="gManeuvreAttributes" />
+    </xs:complexType>
+
+    <xs:complexType name="tFlow" mixed="true">
+        <xs:simpleContent>
+            <xs:extension base="BtlSignal">
+                <xs:attributeGroup ref="gFlowAttributes" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="tVolume" mixed="true">
+        <xs:simpleContent>
+            <xs:extension base="BtlSignal">
+                <xs:attributeGroup ref="gVolumeAttributes" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="tInterpretations">
+        <xs:sequence>
+            <xs:element name="statement" type="tStatement" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Author: ZM, 26.11.2009 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:include schemaLocation="common.xsd" />
+    <xs:include schemaLocation="block.xsd" />
+    <!-- Third level elements (not defined yet) -->
+    <xs:complexType name="analyserListType">
+        <xs:sequence>
+            <xs:element name="analyser" minOccurs="1" maxOccurs="unbounded" >
+              <xs:annotation>
+                <xs:documentation>
+                  Element popisuje typ analyseru, jeho verzi a verzi pouzitych paramametru.
+                </xs:documentation>
+              </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="module" type="xs:string" use="required"/>
+                    <!--            
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="DiagDLL" />
+                <xs:enumeration value="HrvDLL" />
+                <xs:enumeration value="Netron" />
+                <xs:enumeration value="SystemDLL" />
+                <xs:enumeration value="CubesData" />
+                <xs:enumeration value="M" />
+                <xs:enumeration value="Measurement" />
+                <xs:enumeration value="Diagnosis" />
+                <xs:enumeration value="EcgDiagPink" />
+                <xs:enumeration value="EcgDiagGreen" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        -->
+                    <xs:attribute name="moduleVersion" type="xs:string" use="required" />
+                    <xs:attribute name="moduleSettings" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Analysis -->
+    <xs:complexType name="analysisType">
+        <xs:sequence>
+          <xs:element name="analyserList" type="analyserListType" minOccurs="0" maxOccurs="1">
+            <xs:annotation>
+              <xs:documentation>
+                Container element definujici jednotlive analysery.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+            <xs:element name="blockStandard" type="blockStandard" minOccurs="0" maxOccurs="1" />
+            <xs:element name="blockExtended" type="blockExtended" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="analysisDate" type="BtlDateTime" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Datum a cas ukonceni analyzy. DD.MM.YYYY, hh:mm:ss
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="lastChangeDate" type="BtlDateTime" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Datum a cas posledni zmeny v analyze. DD.MM.YYYY, hh:mm:ss
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="analyserType" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Popisuje druh a typ interpreteru.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <!--
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Prague Interpretation" />
+          <xs:enumeration value="Glasgow Interpretation" />
+          <xs:enumeration value="Holter Interpretation" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    -->
+        <xs:attribute name="analyserVersion" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Verze interpreteru (diagnostiky).
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="analyserMachineSN" type="xs:string" use="optional" />
+        <xs:attribute name="analyserMachineType" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              V jakem prostredi je analyzer spousten.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <!--
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BTL-08 Lx" />
+          <xs:enumeration value="BTL-08 SM" />
+          <xs:enumeration value="MEW" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    -->
+        <xs:attribute name="analyserMachineVersion" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              Cislo verze/fw prostredi.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="reference" type="xs:string" use="optional" default="no">
+          <xs:annotation>
+            <xs:documentation>
+              [no/internal/external/confirmed]. Popisuje,
+              zda soubor obsahuje referenci a pokud ano,
+              tak v jakem stavu se reference nachazi.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="routerType" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Popis programu, ktery posle rawData do analyzeru a precte vysledky.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="routerVersion" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              Popis programu, ktery posle rawData do analyzeru a precte vysledky.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="routerSN" type="xs:string" use="optional" />
+        <xs:attribute name="edited" type="xs:string" use="optional" default="no">
+          <xs:annotation>
+            <xs:documentation>
+              [yes/no] Oznacuje, zda byla strojova analyza upravena.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="externalFiles" type="xs:string" use="optional" default="no">
+          <xs:annotation>
+            <xs:documentation>
+              [yes/no] Oznacuje, zda soubor obsahuje odkazy na soubory.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>
