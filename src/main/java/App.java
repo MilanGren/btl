@@ -41,21 +41,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 //import com.sun.xml.ws.util.StringUtils;
-import cz.abclinuxu.datoveschranky.common.ByteArrayAttachmentStorer;
-import cz.abclinuxu.datoveschranky.common.Config;
-import cz.abclinuxu.datoveschranky.common.DataBoxEnvironment;
-import cz.abclinuxu.datoveschranky.common.DataBoxException;
-import cz.abclinuxu.datoveschranky.common.Utils;
-import cz.abclinuxu.datoveschranky.common.entities.Message;
-import cz.abclinuxu.datoveschranky.common.entities.content.ByteContent;
-import cz.abclinuxu.datoveschranky.common.entities.content.FileContent;
-import cz.abclinuxu.datoveschranky.common.interfaces.AttachmentStorer;
-import cz.abclinuxu.datoveschranky.impl.MessageValidator;
-import cz.abclinuxu.datoveschranky.impl.Validator;
-import cz.abclinuxu.datoveschranky.ws.dm.TMessDownOutput;
-import cz.abclinuxu.datoveschranky.ws.dm.TReturnedMessage;
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.http.MediaType;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -198,30 +184,7 @@ public class App {
     }
 
 
-    static class Http {
 
-        private String getHeader (String domain, String username, String password){
-            String auth;
-            if (StringUtils.isBlank(domain)) {
-                auth = String.format("%s:%s", username, password);
-            } else {
-                auth = String.format("%s@%s:%s", username, domain, password);  // milan@client1:password
-            }
-            System.out.println(auth);
-            byte[] encodedAuth = Base64.encodeBase64(
-                auth.getBytes(StandardCharsets.US_ASCII));
-            return "Basic " + new String(encodedAuth);
-        }
-
-        public org.springframework.http.HttpHeaders getJsonHeaders (String domain, String username, String password){
-            org.springframework.http.HttpHeaders jsonHeaders = new org.springframework.http.HttpHeaders();
-            String authHeader = getHeader(domain, username, password);
-            jsonHeaders.set("Authorization", authHeader);
-            jsonHeaders.setContentType(MediaType.APPLICATION_JSON);
-            return jsonHeaders;
-        }
-
-    }
 
     static class RunCmd {
 
@@ -233,7 +196,7 @@ public class App {
             StreamGobbler streamGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
             Executors.newSingleThreadExecutor().submit(streamGobbler);
             int exitCode = process.waitFor();
-            log.info("exit code: " + exitCode);
+
 
             if (exitCode != 0) {
                 try (final BufferedReader b = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
@@ -283,7 +246,7 @@ public class App {
 
         new Ekg().run();
 
-
+        System.out.println("DONE") ;
 
     }
 }

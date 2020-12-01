@@ -14,10 +14,6 @@ import java.util.UUID;
 
 import org.apache.commons.codec.digest.*;
 
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -66,7 +62,6 @@ public class Ekg {
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
-
         Path xmlPath = Paths.get("/home/gre/java/pokusy/btl/ecg_xml/EB0000088340_D.xml") ;
         Document document = builder.parse(new FileInputStream(xmlPath.toFile().getPath()));
 
@@ -101,36 +96,10 @@ public class Ekg {
         Element element = (Element) document.getElementsByTagName("patient").item(0);
         element.setAttribute("ED_ID_v1",sha256Hex);
 
-        // 2. create body
-        node = ((NodeList) xPath.compile("/exportHeader/patient").evaluate(document,
-            XPathConstants.NODESET)).item(0) ;
-
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        addCommonProperties(xmlPath, node, body);
-
-        log.info(body.toString());
-
-
         saveToFile(document,new FileOutputStream(Paths.get("output.xml").toFile().getPath()) );
 
-        log.info("DONE");
-
     }
 
-    private void addCommonProperties(Path localFile, Node node, MultiValueMap<String, Object> body) {
-        log.info("Adding common properties. Concerned file: {}", localFile);
-        //body.add("filedata", new FileSystemResource(localFile));
-        //body.add("name", String.format("%s-%s.%s", LocalDateTime.now().format(dateTimeFormatter), getShortUuid(), FilenameUtils.getExtension(localFile.getFileName().toString())));
-
-        body.add("btl:firstName", node.getAttributes().getNamedItem("firstName").toString()) ;
-        body.add("btl:surname", node.getAttributes().getNamedItem("surname").toString()) ;
-        body.add("btl:birthDate", node.getAttributes().getNamedItem("birthDate").toString()) ;
-        body.add("btl:sex", node.getAttributes().getNamedItem("sex").toString()) ;
-        //body.add("btl:examinationDate", node.getChildNodes().item(0).getChildNodes().item(0).getAttributes().getNamedItem("date").toString()) ;
-        //body.add("btl:examinationDate", node.getE) ;
-        body.add("btl:pacemaker", node.getAttributes().getNamedItem("pacemaker").toString()) ;
-        body.add("btl:fileName", localFile.getFileName().toString());
-    }
 
     private void testValidity(Document doc, String pth) throws IOException, SAXException {
         // create a SchemaFactory capable of understanding WXS schemas
